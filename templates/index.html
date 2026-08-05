@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Glitch Popup</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: radial-gradient(circle at center, #120000 0%, #050000 100%);
+      color: #ff4d4d;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .btn {
+      background: #400000;
+      color: white;
+      border: none;
+      padding: 14px 24px;
+      font-size: 18px;
+      border-radius: 10px;
+      cursor: pointer;
+      z-index: 10;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.72);
+      align-items: center;
+      justify-content: center;
+      z-index: 20;
+    }
+
+    .modal.show {
+      display: flex;
+      animation: backdropFade 0.25s ease-out;
+    }
+
+    .card {
+      width: min(90vw, 420px);
+      background: #120000;
+      border: 2px solid #ff3333;
+      box-shadow: 0 0 25px rgba(255, 0, 0, 0.5);
+      padding: 20px;
+      text-align: center;
+      position: relative;
+      animation: popIn 0.32s cubic-bezier(0.2, 0.9, 0.2, 1.15);
+      z-index: 21;
+    }
+
+    .title {
+      font-size: 28px;
+      font-weight: bold;
+      color: #ff1a1a;
+      animation: glitch 0.25s infinite;
+    }
+
+    .text {
+      margin-top: 16px;
+      font-size: 18px;
+      line-height: 1.4;
+    }
+
+    .close {
+      margin-top: 20px;
+      background: #2b0000;
+      color: white;
+      border: 1px solid #ff3333;
+      padding: 12px 18px;
+      border-radius: 8px;
+      cursor: not-allowed;
+      opacity: 0.65;
+    }
+
+    .bg-creature {
+      position: fixed;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.9;
+    }
+
+    .ghost {
+      font-size: 56px;
+      animation: floatGhost 8s linear infinite;
+      text-shadow: 0 0 12px rgba(255,255,255,0.6);
+    }
+
+    .ghost.g1 { top: 12%; left: -10%; animation-duration: 11s; }
+    .ghost.g2 { top: 28%; left: -20%; animation-duration: 14s; animation-delay: 2s; }
+    .ghost.g3 { top: 65%; left: -15%; animation-duration: 10s; animation-delay: 1s; }
+
+    .skeleton {
+      font-size: 52px;
+      animation: runSkeleton 7s linear infinite;
+      text-shadow: 0 0 8px rgba(255, 255, 255, 0.35);
+    }
+
+    .s1 { top: 18%; left: -15%; animation-duration: 9s; animation-delay: 0s; }
+    .s2 { top: 55%; left: -25%; animation-duration: 12s; animation-delay: 3s; }
+    .s3 { top: 78%; left: -12%; animation-duration: 8s; animation-delay: 1s; }
+
+    @keyframes backdropFade {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes popIn {
+      from {
+        opacity: 0;
+        transform: scale(0.78) translateY(20px);
+        filter: blur(2px);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+        filter: blur(0);
+      }
+    }
+
+    @keyframes glitch {
+      0% { transform: translate(0,0); text-shadow: 2px 0 #ff0000, -2px 0 #00ffff; }
+      20% { transform: translate(-1px,1px); }
+      40% { transform: translate(1px,-1px); }
+      60% { transform: translate(-2px,0); }
+      80% { transform: translate(2px,1px); }
+      100% { transform: translate(0,0); }
+    }
+
+    @keyframes floatGhost {
+      0%   { transform: translateX(-10vw) translateY(0) rotate(0deg); }
+      50%  { transform: translateX(60vw) translateY(-30px) rotate(10deg); }
+      100% { transform: translateX(110vw) translateY(0) rotate(0deg); }
+    }
+
+    @keyframes runSkeleton {
+      0%   { transform: translateX(-15vw) scaleX(1); }
+      45%  { transform: translateX(55vw) scaleX(1); }
+      50%  { transform: translateX(60vw) scaleX(-1); }
+      95%  { transform: translateX(115vw) scaleX(-1); }
+      100% { transform: translateX(120vw) scaleX(-1); }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-creature ghost g1">👻</div>
+  <div class="bg-creature ghost g2">👻</div>
+  <div class="bg-creature ghost g3">👻</div>
+
+  <div class="bg-creature skeleton s1">☠️</div>
+  <div class="bg-creature skeleton s2">💀</div>
+  <div class="bg-creature skeleton s3">☠️</div>
+
+  <button class="btn" onclick="openModal()">Открыть окно</button>
+
+  <div class="modal" id="modal">
+    <div class="card">
+      <div class="title">SYSTEM ERROR</div>
+      <div class="text">
+        Обнаружен сбой интерфейса.<br>
+      </div>
+      <button class="close" disabled>Закрыть</button>
+    </div>
+  </div>
+
+  <script>
+    const modal = document.getElementById("modal");
+    let timer = null;
+
+    function openModal() {
+      modal.classList.add("show");
+      if (timer) clearTimeout(timer);
+      timer = setTimeout(() => {
+        modal.classList.remove("show");
+      }, 300000);
+    }
+  </script>
+</body>
+</html>
